@@ -1,124 +1,109 @@
-# Gerenciador de Arquivos no Disco
+# Disk File Manager
 
-Este projeto implementa um gerenciador de arquivos em disco, simulando alocação e gerenciamento de memória para arquivos. Ele suporta diferentes estratégias de alocação e gerenciamento, como:
+This project implements a disk file manager, simulating memory allocation and management for files. It supports different allocation and management strategies, such as:
 
-- **Alocação Contígua**
-- **Alocação Encadeada**
-- **Alocação Indexada**
+- **Contiguous Allocation**
+- **Linked Allocation**
+- **Indexed Allocation**
 
-## Compilação e Execução
+## Build and Run
 
-### Requisitos
-- Compilador C++ com suporte ao **C++11** ou superior.
+### Requirements
+- C++ compiler with **C++11** support or higher.
 
-### Compilação
-Use o seguinte comando para compilar:
+### Build
+Use the following command to compile:
 
 ```bash
 g++ simulator.cpp -o simulator -Wall
 ./simulator
 ```
 
-## Funcionalidades
+## Features
 
-1. **Criação de Arquivos**: 
-   - Cria arquivos usando diferentes estratégias de alocação.
-   - Garante o uso eficiente dos blocos de memória.
+1. **File Creation**:
+   - Creates files using different allocation strategies.
+   - Ensures efficient use of memory blocks.
 
-2. **Exclusão de Arquivos**:
-   - Remove arquivos e libera a memória alocada.
+2. **File Deletion**:
+   - Removes files and frees the allocated memory.
 
-3. **Exibição de Memória**:
-   - Visualiza o estado do disco e a ocupação dos blocos de memória.
+3. **Memory Display**:
+   - Displays the disk state and memory block usage.
 
-4. **Visualização de Arquivos Específicos**:
-   - Detalhes como nome, tamanho e localização dos blocos.
+4. **Specific File View**:
+   - Details such as name, size, and block location.
 
-5. **Tratamento de Erros**:
-   - Garante entradas válidas e fornece mensagens de erro úteis.
+5. **Error Handling**:
+   - Ensures valid input and provides helpful error messages.
 
-## Estrutura de Dados
+## Data Structures
 
-### Estrutura `Block`
-Representa um bloco no disco:
+### `Block` Structure
+Represents a block on the disk:
 ```cpp
 struct Block {
-    string color;          // Cor associada ao bloco do arquivo
-    string file_name;      // Nome do arquivo
-    int block_index;       // Índice do bloco
-    int blocks_length;     // Número total de blocos usados pelo arquivo
-    int start_block;       // Índice do bloco inicial
-    Block *next;           // Ponteiro para o próximo bloco
-    set<Block*> nexts_blocks; // Blocos relacionados (alocação indexada)
+    string color;          // Color associated with the file's block
+    string file_name;      // File name
+    int block_index;       // Block index
+    int blocks_length;     // Total number of blocks used by the file
+    int start_block;       // Starting block index
+    Block *next;           // Pointer to the next block
+    set<Block*> nexts_blocks; // Related blocks (indexed allocation)
 };
 ```
 
-
-# Estrutura FileInfo
-Armazena informações sobre o arquivo:
+### `FileInfo` Structure
+Stores information about the file:
 ```cpp
 struct FileInfo {
-    string file_name_info;       // Nome do arquivo
-    int logic_blocks_num_info;   // Quantidade de blocos lógicos necessários
+    string file_name_info;       // File name
+    int logic_blocks_num_info;   // Number of logical blocks required
 };
 ```
 
+## Colors
+Colors are used to visually identify files. Example mapping:
 
-## Cores Utilizadas
-As cores são usadas para identificar arquivos visualmente. Exemplo de mapeamento:
+- `\033[30m`: Black
+- `\033[31m`: Red
 
-- `\033[30m`: Preto
-- `\033[31m`: Vermelho
-
-Outras cores são configuradas no `initColors()`.
-
----
-
-## Funções
-
-### Inicialização
-- **`initColors()`**: Inicializa o mapa de cores disponíveis.
-
-### Manipulação de Arquivos
-- **`contiguousFileCreate()`**: Cria arquivos usando alocação contígua.
-- **`linkedFileCreate()`**: Cria arquivos usando alocação encadeada.
-- **`indexedFileCreate()`**: Cria arquivos usando alocação indexada.
-- **`contiguousFileDelete()`**: Remove arquivos alocados contiguamente.
-- **`linkedFileDelete()`**: Remove arquivos alocados encadeadamente.
-- **`recursiveDeleteLinkedFile()`**: Libera a memoria do arquivo deletado e cria novos blocos vazios aonde foi deletado.
-- **`indexedFileDelete()`**: Remove arquivos alocados por índice.
-
-### Descritor de arquivos
-- **`findInFileDescriptor()`**: Verifica se o arquivo esta no descrito.
-- **`deleteFileInDescriptor()`**: Exclui um arquivo do descritor.
-- **`deleteFileInDescriptor()`**: Exclui um arquivo do descritor.
-
-
-### Visualização
-
-- **`showDiskMemory()`**: Exibe a memória do disco.
-- **`showTableFileInDescriptor()`**: Chama a funcao para exibir informacoes do disco, toma decisao se e um arquivo especifico ou nao.
-- **`showBlock()`**: Exibe informacoes dos arquivos.
-- **`showSpecificFile()`**: Exibe detalhes de um arquivo específico.
-- **`showLinkedBlocks()`**: Exibe os blocos recursivamente dos algoritimos CONTIGUO e ENCADEADO.
-- **`showIndexTable()`**: Exibe os blocos guaradados na tabela de blocos de um arquivo no algoritimo INDEXADO.
-
-
-
-
-### Auxiliares
-- **`instructionAllocation()`**: Toma a decisao de qual funcao chamar para qual algoritimo (C || E || S).
-- **`integerTreatment()`**: Valida entradas inteiras.
-- **`findAvaliableColor()`**: Procura uma cor disponivel para um arquivo.
-- **`findFreeBlocks()`**: Localiza blocos livres no disco.
-- **`deepCopyVector()`**: Cria uma cópia do vetor de blocos para visualização.
-- **`deleteDeepCopy()`**: Deleta a cópia criada do vetor de blocos para visualização.
-- **`cinFileInfo()`**: Usado para dar as entradas nos arquivos que serao criados.
-- **`verifyFileNameToDelete()`**: Verifica se o arquivo a ser deletado é um arquivo valido.
-
+Other colors are configured in `initColors()`.
 
 ---
 
-https://github.com/lucasbrun196/disk-memory-allocation-
+## Functions
 
+### Initialization
+- **`initColors()`**: Initializes the map of available colors.
 
+### File Handling
+- **`contiguousFileCreate()`**: Creates files using contiguous allocation.
+- **`linkedFileCreate()`**: Creates files using linked allocation.
+- **`indexedFileCreate()`**: Creates files using indexed allocation.
+- **`contiguousFileDelete()`**: Removes contiguously allocated files.
+- **`linkedFileDelete()`**: Removes files allocated with linked allocation.
+- **`recursiveDeleteLinkedFile()`**: Frees the deleted file's memory and creates new empty blocks where it was removed.
+- **`indexedFileDelete()`**: Removes files allocated with indexed allocation.
+
+### File Descriptor
+- **`findInFileDescriptor()`**: Checks whether the file is in the descriptor.
+- **`deleteFileInDescriptor()`**: Deletes a file from the descriptor.
+
+### Display
+- **`showDiskMemory()`**: Displays the disk memory.
+- **`showTableFileInDescriptor()`**: Calls the function that displays disk information, deciding whether to show a specific file or all files.
+- **`showBlock()`**: Displays file information.
+- **`showSpecificFile()`**: Displays details of a specific file.
+- **`showLinkedBlocks()`**: Recursively displays the blocks for the CONTIGUOUS and LINKED algorithms.
+- **`showIndexTable()`**: Displays the blocks stored in a file's block table for the INDEXED algorithm.
+
+### Helpers
+- **`instructionAllocation()`**: Decides which function to call for each algorithm (C || E || S).
+- **`integerTreatment()`**: Validates integer input.
+- **`findAvaliableColor()`**: Finds an available color for a file.
+- **`findFreeBlocks()`**: Locates free blocks on the disk.
+- **`deepCopyVector()`**: Creates a copy of the block vector for display.
+- **`deleteDeepCopy()`**: Deletes the copy of the block vector created for display.
+- **`cinFileInfo()`**: Reads the input for files to be created.
+- **`verifyFileNameToDelete()`**: Checks whether the file to be deleted is valid.
